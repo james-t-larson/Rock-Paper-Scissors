@@ -19,12 +19,26 @@ button {
   height: 30px;
   margin: 0 auto;
   margin-top: 2%;
-  margin-left: 47%;
+}
+
+@media (max-width: 800px) {
+  .choices{
+    width: 80% !important;
+  }
+  .choice {
+    width: 40%;
+  }
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
 }
 
 .choices {
-  max-width: 50%;
+  max-width: 40%;
   margin: 0 auto;
+  align-items: center;
   margin-top: 2%; 
 }
 
@@ -45,12 +59,13 @@ button {
 
 .selected {
   opacity: 1;
+  width: 34%;
 }
 
 .comp_choice_img {
   margin-top: 2.5%;
-  margin-left: 42.5%;
-  max-width: 15%;
+  margin: 0 auto;
+  max-width: 10%;
 }
 
 #hideMe {

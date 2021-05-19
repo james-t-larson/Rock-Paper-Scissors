@@ -9,12 +9,11 @@ function App() {
 
   const img_choices = [rock, scissors, paper]
 
-  const [results, setResults] = useState({})
+  const [results, setResults] = useState({ winner: "", winner_choice: "" })
   const [comp_choice, setCompChoice] = useState(-1)
+  const [selected, setSelected] = useState("1")
 
   let play = (e) => {
-
-    e.target.classList.toggle("selected")
 
     let user_choice = (e.target.attributes.value.value)
     let choices = ["rock", "scissors", "paper"]
@@ -79,7 +78,7 @@ function App() {
           <p>Click to choose an option</p>
       }
       <div className='choices'>
-        <img onClick={play} className='rock choice' value={0} src={rock}></img>
+        <img onClick={play} className={`rock choice ${ "rock" == selected ? 'selected' : "" }`} value={0} src={rock}></img>
         <img onClick={play} className='paper choice' value={2} src={paper}></img>
         <img onClick={play} className='scissors choice' value={1} src={scissors}></img>
       </div>
