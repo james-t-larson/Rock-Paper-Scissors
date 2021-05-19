@@ -7,12 +7,16 @@ import rock from './images/rock.png'
 
 function App() {
 
+  const img_choices = [rock, scissors, paper]
+
   const [results, setResults] = useState({})
+  const [comp_choice, setCompChoice] = useState(-1)
 
   let play = (e) => {
 
+    e.target.classList.toggle("selected")
+
     let user_choice = (e.target.attributes.value.value)
-    let comp_choice = (Math.round(Math.random() * 2)) 
     let choices = ["rock", "scissors", "paper"]
 
     let results = {
@@ -20,29 +24,40 @@ function App() {
       winner_choice:  "" 
     }
 
-    while (user_choice == comp_choice) {
-      comp_choice = (Math.round(Math.random() * 2)) 
-    }
-
-    if (user_choice == comp_choice - 1 || user_choice == 2 && comp_choice == 0){
-      results.winner = "You"
-      results.winner_choice = choices[user_choice]
-    } else {
-      results.winner = "The computer"
-      results.winner_choice = choices[comp_choice]
-    } 
-
     let start = Date.now(); // The current date (in miliseconds)
     let end = start + 5000; // 5 seconds afterwords
 
     function spinWheel() {
         start = Date.now(); // Get the date currently
-        console.log("test")
-        if(start > end) clearInterval(timer); // If we are 5 seconds later clear interval
-    }
-    let timer = setInterval(spinWheel, 200);
+        let choice = (Math.round(Math.random() * 2)) 
+        setCompChoice(choice)
+        console.log(choice)
+        
+        if(start > end){ 
 
-    setResults(results)
+          while (choice == user_choice) {
+            console.log("there was a tie")
+            choice = (Math.round(Math.random() * 2)) 
+            setCompChoice(choice) 
+          }
+
+          if (user_choice == choice - 1 || user_choice == 2 && choice == 0){
+            results.winner = "You"
+            results.winner_choice = choices[user_choice]
+          } else {
+            results.winner = "The computer"
+            results.winner_choice = choices[choice]
+          } 
+
+          setResults(results)
+
+          clearInterval(timer); // If we are 5 seconds later clear interval
+
+        } 
+
+    }
+
+    let timer = setInterval(spinWheel, 200);
 
   }
 
@@ -56,7 +71,11 @@ function App() {
       <h1>Choose your weapon</h1>
       {
           Object.keys(results).length > 0 ?
-          <p>{results.winner} won the game, with {results.winner_choice}!</p> :
+          <>
+          <p>{results.winner} won the game, with {results.winner_choice}!</p> 
+          <button>Play Again?</button>
+          </>
+          :
           <p>Click to choose an option</p>
       }
       <div className='choices'>
@@ -64,6 +83,13 @@ function App() {
         <img onClick={play} className='paper choice' value={2} src={paper}></img>
         <img onClick={play} className='scissors choice' value={1} src={scissors}></img>
       </div>
+      {
+       comp_choice !== -1 &&
+       <>
+       <p>vs</p>
+       <img className="comp_choice_img" src={img_choices[comp_choice]}></img>
+       </>
+      }
     </div>
   );
 }
