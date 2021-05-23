@@ -8,14 +8,14 @@ import rock from './images/rock.png'
 function App() {
 
   const img_choices = [rock, scissors, paper]
-
   const [results, setResults] = useState({ winner: "", winner_choice: "" })
   const [comp_choice, setCompChoice] = useState(-1)
-  const [selected, setSelected] = useState("1")
+  const [selected, setSelected] = useState('')
 
   let play = (e) => {
 
-    let user_choice = (e.target.attributes.value.value)
+    setSelected(e.target.attributes.alt.value)
+    let user_choice = e.target.attributes.value.value
     let choices = ["rock", "scissors", "paper"]
 
     let results = {
@@ -30,12 +30,10 @@ function App() {
         start = Date.now(); // Get the date currently
         let choice = (Math.round(Math.random() * 2)) 
         setCompChoice(choice)
-        console.log(choice)
         
         if(start > end){ 
 
           while (choice == user_choice) {
-            console.log("there was a tie")
             choice = (Math.round(Math.random() * 2)) 
             setCompChoice(choice) 
           }
@@ -78,9 +76,27 @@ function App() {
           <p>Click to choose an option</p>
       }
       <div className='choices'>
-        <img onClick={play} className={`rock choice ${ "rock" == selected ? 'selected' : "" }`} value={0} src={rock}></img>
-        <img onClick={play} className='paper choice' value={2} src={paper}></img>
-        <img onClick={play} className='scissors choice' value={1} src={scissors}></img>
+        <img 
+          onClick={play}
+          className={`choice ${'rock' === selected ? 'selected' : '' }`}
+          value={0}
+          src={rock}
+          alt='rock'
+        ></img>
+        <img 
+          onClick={play}
+          className={`choice ${'paper' === selected ? 'selected' : '' }`}
+          value={2}
+          src={paper}
+          alt='paper'
+        ></img>
+        <img
+          onClick={play} 
+          className={`choice ${'scissors' === selected ? 'selected' : '' }`}
+          value={1}
+          src={scissors}
+          alt='scissors'
+        ></img>
       </div>
       {
        comp_choice !== -1 &&
