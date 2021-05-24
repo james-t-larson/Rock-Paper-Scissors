@@ -21,30 +21,45 @@ button {
   margin-top: 2%;
 }
 
-@media (max-width: 800px) {
-  .choices{
-    width: 80% !important;
+@media (max-width: 1000px) {
+  .choices {
+    max-width: 80%;
+    margin: 0 auto;
+    align-items: center;
+    margin-top: 2%; 
   }
   .choice {
-    width: 40%;
+    width: 33%;
+    opacity: 0.5;
+  }
+  .compChoiceImg {
+    margin-top: 2.5%;
+    margin: 0 auto;
+    max-width: 20%;
+  }
+}
+
+@media (min-width: 1000px){
+  .choices {
+    max-width: 40%;
+    margin: 0 auto;
+    align-items: center;
+    margin-top: 2%; 
+  }
+  .choice {
+    width: 33%;
+    opacity: 0.5;
+  }
+  .comp_choice_img {
+    margin-top: 2.5%;
+    margin: 0 auto;
+    max-width: 10%;
   }
 }
 
 .App {
   display: flex;
   flex-direction: column;
-}
-
-.choices {
-  max-width: 40%;
-  margin: 0 auto;
-  align-items: center;
-  margin-top: 2%; 
-}
-
-.choice {
-  width: 33%;
-  opacity: 0.5;
 }
 
 .choice:active {
@@ -66,19 +81,10 @@ button {
   opacity: 1 !important;
 }
 
-.comp_choice_img {
-  margin-top: 2.5%;
-  margin: 0 auto;
-  max-width: 10%;
+.compChoosing {
+  opacity: 0.5;
 }
 
-#hideMe {
-  -webkit-animation: cssAnimation 5s forwards; 
-  animation: cssAnimation 1s forwards;
-}
-
-@keyframes cssAnimation {
-  0%   {opacity: 1;}
-  90%  {opacity: 1;}
-  100% {opacity: 0;}
+.compDecided {
+  opacity: 1;
 }

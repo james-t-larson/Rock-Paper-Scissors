@@ -9,6 +9,7 @@ function App() {
 
   const [results, setResults] = useState({ winner: "", winnerChoice: "" })
   const [compChoice, setCompChoice] = useState(-1)
+  const [compDecided, setCompDecided] = useState(false)
   const [selected, setSelected] = useState('')
   const [gameRan, setGameRan] = useState(false)
 
@@ -31,6 +32,7 @@ function App() {
     setGameRan(false);
     setSelected("");
     setCompChoice(-1);
+    setCompDecided(false)
     setResults({
       winner: "",
       winnerChoice: "",
@@ -46,7 +48,7 @@ function App() {
     let start = Date.now(); // The current date (in miliseconds)
     let end = start + 5000; // 5 seconds afterwords
 
-    function spinWheel() {
+    let spinWheel = () => {
         start = Date.now(); // Get the date currently
         let currentCompChoice = (Math.round(Math.random() * 2)) 
         setCompChoice(currentCompChoice)
@@ -59,10 +61,12 @@ function App() {
           }
 
           if (userChoice === currentCompChoice - 1 || userChoice === 2 && currentCompChoice === 0){
-            setResults({ winner: 'You', winnerChoice: choices[currentCompChoice].str })
+            setResults({ winner: 'You', winnerChoice: choices[userChoice].str })
           } else {
             setResults({ winner: "The computer", winnerChoice: choices[currentCompChoice].str })
           } 
+
+          setCompDecided(true)
 
           clearInterval(timer); // If we are 5 seconds later clear interval
 
@@ -110,7 +114,10 @@ function App() {
        compChoice !== -1 &&
        <>
        <p>vs</p>
-       <img className="comp_choice_img" src={choices[compChoice].src}></img>
+       <img 
+        className={`compChoiceImg ${ compDecided ? 'compDecided' : 'compChoosing'} `} 
+        src={choices[compChoice].src}
+       ></img>
        </>
       }
     </div>
