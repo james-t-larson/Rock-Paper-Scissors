@@ -7,46 +7,62 @@ import rock from './images/rock.png'
 
 function App() {
 
-  const img_choices = [rock, scissors, paper]
-  const [results, setResults] = useState({ winner: "", winner_choice: "" })
-  const [comp_choice, setCompChoice] = useState(-1)
+  const [results, setResults] = useState({ winner: "", winnerChoice: "" })
+  const [compChoice, setCompChoice] = useState(-1)
   const [selected, setSelected] = useState('')
+  const [gameRan, setGameRan] = useState(false)
+
+  const choices = [
+    {
+      src: rock,
+      str: 'rock'
+    },
+    {
+      src: scissors,
+      str: 'scissors'
+    },
+    {
+      src: paper,
+      str: 'paper',
+    }
+  ]
+
+  let restart = () => {
+    setGameRan(false);
+    setSelected("");
+    setCompChoice(-1);
+    setResults({
+      winner: "",
+      winnerChoice: "",
+    });
+  };
 
   let play = (e) => {
 
-    setSelected(e.target.attributes.alt.value)
-    let user_choice = e.target.attributes.value.value
-    let choices = ["rock", "scissors", "paper"]
-
-    let results = {
-      winner: "",
-      winner_choice:  "" 
-    }
+    setGameRan(true)
+    setSelected(e.target.attributes.alt.value) // set selected to the aly value of  the event 
+    let userChoice = Number(e.target.attributes.value.value)
 
     let start = Date.now(); // The current date (in miliseconds)
     let end = start + 5000; // 5 seconds afterwords
 
     function spinWheel() {
         start = Date.now(); // Get the date currently
-        let choice = (Math.round(Math.random() * 2)) 
-        setCompChoice(choice)
-        
+        let currentCompChoice = (Math.round(Math.random() * 2)) 
+        setCompChoice(currentCompChoice)
+
         if(start > end){ 
 
-          while (choice == user_choice) {
-            choice = (Math.round(Math.random() * 2)) 
-            setCompChoice(choice) 
+          while (currentCompChoice === userChoice) { // to avoid a tie
+            currentCompChoice = (Math.round(Math.random() * 2)) 
+            setCompChoice(currentCompChoice) 
           }
 
-          if (user_choice == choice - 1 || user_choice == 2 && choice == 0){
-            results.winner = "You"
-            results.winner_choice = choices[user_choice]
+          if (userChoice === currentCompChoice - 1 || userChoice === 2 && currentCompChoice === 0){
+            setResults({ winner: 'You', winnerChoice: choices[currentCompChoice].str })
           } else {
-            results.winner = "The computer"
-            results.winner_choice = choices[choice]
+            setResults({ winner: "The computer", winnerChoice: choices[currentCompChoice].str })
           } 
-
-          setResults(results)
 
           clearInterval(timer); // If we are 5 seconds later clear interval
 
@@ -54,7 +70,7 @@ function App() {
 
     }
 
-    let timer = setInterval(spinWheel, 200);
+    let timer = setInterval(spinWheel, 100);
 
   }
 
@@ -67,42 +83,34 @@ function App() {
       </Helmet>
       <h1>Choose your weapon</h1>
       {
-          Object.keys(results).length > 0 ?
-          <>
-          <p>{results.winner} won the game, with {results.winner_choice}!</p> 
-          <button>Play Again?</button>
-          </>
-          :
+        results.winner === "" ?
           <p>Click to choose an option</p>
+        :
+          <>
+          <p>{results.winner} won the game, with {results.winnerChoice}!</p> 
+          <button onClick={restart} >Play Again?</button>
+          </>
       }
       <div className='choices'>
-        <img 
-          onClick={play}
-          className={`choice ${'rock' === selected ? 'selected' : '' }`}
-          value={0}
-          src={rock}
-          alt='rock'
-        ></img>
-        <img 
-          onClick={play}
-          className={`choice ${'paper' === selected ? 'selected' : '' }`}
-          value={2}
-          src={paper}
-          alt='paper'
-        ></img>
-        <img
-          onClick={play} 
-          className={`choice ${'scissors' === selected ? 'selected' : '' }`}
-          value={1}
-          src={scissors}
-          alt='scissors'
-        ></img>
+        { 
+          choices.map((choice) => {
+              return (
+              <img
+                onClick={(e) => !gameRan && play(e) }
+                className={`choice ${choice.str === selected ? 'selected' : '' }`}
+                value={choices.indexOf(choice)}
+                src={choice.src}
+                alt={choice.str}
+              ></img>
+            )
+          }) 
+        }
       </div>
       {
-       comp_choice !== -1 &&
+       compChoice !== -1 &&
        <>
        <p>vs</p>
-       <img className="comp_choice_img" src={img_choices[comp_choice]}></img>
+       <img className="comp_choice_img" src={choices[compChoice].src}></img>
        </>
       }
     </div>

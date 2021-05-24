@@ -62,6 +62,10 @@ button {
   width: 34%;
 }
 
+.selected:hover {
+  opacity: 1 !important;
+}
+
 .comp_choice_img {
   margin-top: 2.5%;
   margin: 0 auto;
