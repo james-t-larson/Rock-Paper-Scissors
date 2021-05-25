@@ -16,23 +16,23 @@ function App() {
   const choices = [
     {
       src: rock,
-      str: 'rock'
+      str: "rock",
     },
     {
       src: scissors,
-      str: 'scissors'
+      str: "scissors",
     },
     {
       src: paper,
-      str: 'paper',
-    }
-  ]
+      str: "paper",
+    },
+  ];
 
   let restart = () => {
     setGameRan(false);
     setSelected("");
     setCompChoice(-1);
-    setCompDecided(false)
+    setCompDecided(false);
     setResults({
       winner: "",
       winnerChoice: "",
@@ -40,42 +40,44 @@ function App() {
   };
 
   let play = (e) => {
-
-    setGameRan(true)
-    setSelected(e.target.attributes.alt.value) // set selected to the alt value of the event 
-    let userChoice = Number(e.target.attributes.value.value)
+    setGameRan(true);
+    setSelected(e.target.attributes.alt.value); // set selected to the alt value of the event
+    let userChoice = Number(e.target.attributes.value.value);
 
     let start = Date.now(); // The current date (in miliseconds)
     let end = start + 5000; // 5 seconds afterwords
 
     let spinWheel = () => {
-        let currentCompChoice = (Math.round(Math.random() * 2)) 
-        setCompChoice(currentCompChoice)
+      let currentCompChoice = Math.round(Math.random() * 2);
+      setCompChoice(currentCompChoice);
 
-        if(start > end){ 
+      if (start > end) {
+        while (currentCompChoice === userChoice) {
+          // to avoid a tie
+          currentCompChoice = Math.round(Math.random() * 2);
+          setCompChoice(currentCompChoice);
+        }
 
-          while (currentCompChoice === userChoice) { // to avoid a tie
-            currentCompChoice = (Math.round(Math.random() * 2)) 
-            setCompChoice(currentCompChoice) 
-          }
+        if (
+          userChoice === currentCompChoice - 1 ||
+          (userChoice === 2 && currentCompChoice === 0)
+        ) {
+          setResults({ winner: "You", winnerChoice: choices[userChoice].str });
+        } else {
+          setResults({
+            winner: "The computer",
+            winnerChoice: choices[currentCompChoice].str,
+          });
+        }
 
-          if (userChoice === currentCompChoice - 1 || userChoice === 2 && currentCompChoice === 0){
-            setResults({ winner: 'You', winnerChoice: choices[userChoice].str })
-          } else {
-            setResults({ winner: "The computer", winnerChoice: choices[currentCompChoice].str })
-          } 
+        setCompDecided(true);
 
-          setCompDecided(true)
-
-          clearInterval(timer); // If we are 5 seconds later clear interval
-
-        } 
-
-    }
+        clearInterval(timer); // If we are 5 seconds later clear interval
+      }
+    };
 
     let timer = setInterval(spinWheel, 100);
-
-  }
+  };
 
   return (
     <div className="App">
