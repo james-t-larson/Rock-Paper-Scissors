@@ -42,14 +42,13 @@ function App() {
   let play = (e) => {
 
     setGameRan(true)
-    setSelected(e.target.attributes.alt.value) // set selected to the aly value of  the event 
+    setSelected(e.target.attributes.alt.value) // set selected to the alt value of the event 
     let userChoice = Number(e.target.attributes.value.value)
 
     let start = Date.now(); // The current date (in miliseconds)
     let end = start + 5000; // 5 seconds afterwords
 
     let spinWheel = () => {
-        start = Date.now(); // Get the date currently
         let currentCompChoice = (Math.round(Math.random() * 2)) 
         setCompChoice(currentCompChoice)
 
@@ -115,7 +114,7 @@ function App() {
        <>
        <p>vs</p>
        <img 
-        className={`compChoiceImg ${ compDecided ? 'compDecided' : 'compChoosing'} `} 
+        className={`compChoiceImg ${ compDecided ? 'compDecided' : 'compChoosing' } `} 
         src={choices[compChoice].src}
        ></img>
        </>
